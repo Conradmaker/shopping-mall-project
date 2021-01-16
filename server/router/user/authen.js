@@ -43,7 +43,7 @@ router.post("/login", (req, res) => {
 });
 
 //NOTE: 로그인 인증
-router.post("/auth", auth, (req, res) => {
+router.get("/auth", auth, (req, res) => {
   res.status(200).json({
     _id: req.user.id,
     isAdmin: req.user.role === 0 ? false : true,

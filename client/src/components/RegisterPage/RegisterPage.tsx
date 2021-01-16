@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { registerUser } from '../../modules/user/thunks';
+import { authUser, registerUser } from '../../modules/user/thunks';
 
 export default function RegisterPage({
   history,
@@ -33,6 +33,9 @@ export default function RegisterPage({
     dispatch(registerUser({ email, password, name }));
     history.push('/');
   };
+  useEffect(() => {
+    dispatch(authUser());
+  }, []);
   return (
     <div>
       <form onSubmit={onSubmit}>

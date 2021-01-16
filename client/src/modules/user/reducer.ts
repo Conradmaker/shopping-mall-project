@@ -3,6 +3,7 @@ import { UserActions, UserState } from './types';
 const initialState: UserState = {
   userLogin: { loading: false, data: null, error: null },
   userRegister: { loading: false, data: null, error: null },
+  userAuth: { loading: false, data: null, error: null },
 };
 
 export default function user(
@@ -40,6 +41,39 @@ export default function user(
       return {
         ...state,
         userRegister: { loading: false, data: null, error: action.payload },
+      };
+
+    case 'user/LOGOUT_REQUEST':
+      return {
+        ...state,
+        userLogin: { ...state.userLogin, loading: true },
+      };
+    case 'user/LOGOUT_SUCCESS':
+      return {
+        ...state,
+        userLogin: { loading: false, data: null, error: null },
+        userAuth: { ...state.userAuth, data: null },
+      };
+    case 'user/LOGOUT_ERROR':
+      return {
+        ...state,
+        userLogin: { loading: false, data: null, error: action.payload },
+      };
+
+    case 'user/AUTH_REQUEST':
+      return {
+        ...state,
+        userAuth: { loading: true, data: null, error: null },
+      };
+    case 'user/AUTH_SUCCESS':
+      return {
+        ...state,
+        userAuth: { loading: false, data: action.payload, error: null },
+      };
+    case 'user/AUTH_ERROR':
+      return {
+        ...state,
+        userAuth: { loading: false, data: null, error: action.payload },
       };
     default:
       return state;

@@ -9,8 +9,20 @@ import {
   registerSuccess,
   registerRequest,
   registerError,
+  logoutRequest,
+  logoutSuccess,
+  logoutError,
+  authRequest,
+  authSuccess,
+  authError,
 } from './actions';
-import { loginData, RegisterData, UserActions } from './types';
+import {
+  UserData,
+  loginData,
+  LogoutData,
+  RegisterData,
+  UserActions,
+} from './types';
 
 const loginAPI = async (data: loginRequsetData) => {
   const response = await axios.post<loginData>('/api/user/login', data);
@@ -41,5 +53,33 @@ export const registerUser = (data: RegisterRequestData) => async (
     dispatch(registerSuccess(res));
   } catch (e) {
     dispatch(registerError(e));
+  }
+};
+
+const logoutAPI = async () => {
+  const response = await axios.get<LogoutData>('/api/user/logout');
+  return response.data;
+};
+export const logoutUser = () => async (dispatch: Dispatch<UserActions>) => {
+  try {
+    dispatch(logoutRequest());
+    const res = await logoutAPI();
+    dispatch(logoutSuccess(res));
+  } catch (e) {
+    dispatch(logoutError(e));
+  }
+};
+
+const authAPI = async () => {
+  const response = await axios.get<UserData>('/api/user/auth');
+  return response.data;
+};
+export const authUser = () => async (dispatch: Dispatch<UserActions>) => {
+  try {
+    dispatch(authRequest());
+    const res = await authAPI();
+    dispatch(authSuccess(res));
+  } catch (e) {
+    dispatch(authError(e));
   }
 };
