@@ -1,2 +1,3 @@
-const a = 1;
-export default a;
+export * from './actions';
+export * from './types';
+export { default } from './reducer';
