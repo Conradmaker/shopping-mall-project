@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
+const path = require('path')
 
 const config = require("./config/key");
 
@@ -16,6 +17,7 @@ mongoose
   .then(() => console.log("mongodb 연결"))
   .catch(() => console.error("몽고디비 연결 실패"));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
