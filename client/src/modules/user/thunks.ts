@@ -2,20 +2,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { loginRequsetData, RegisterRequestData } from '../../types';
-import {
-  loginRequest,
-  loginError,
-  loginSuccess,
-  registerSuccess,
-  registerRequest,
-  registerError,
-  logoutRequest,
-  logoutSuccess,
-  logoutError,
-  authRequest,
-  authSuccess,
-  authError,
-} from './actions';
+import { authAsync, loginAsync, logoutAsync, registerAsync } from './actions';
 import {
   UserData,
   loginData,
@@ -31,13 +18,14 @@ const loginAPI = async (data: loginRequsetData) => {
 export const loginUser = (data: loginRequsetData) => async (
   dispatch: Dispatch<UserActions>
 ) => {
+  const { request, success, failure } = loginAsync;
   try {
-    dispatch(loginRequest());
+    dispatch(request());
     const res = await loginAPI(data);
-    dispatch(loginSuccess(res));
+    dispatch(success(res));
   } catch (e) {
     console.error(e);
-    dispatch(loginError(e));
+    dispatch(failure(e));
   }
 };
 
@@ -48,12 +36,13 @@ const registerAPI = async (data: RegisterRequestData) => {
 export const registerUser = (data: RegisterRequestData) => async (
   dispatch: Dispatch<UserActions>
 ) => {
+  const { request, success, failure } = registerAsync;
   try {
-    dispatch(registerRequest());
+    dispatch(request());
     const res = await registerAPI(data);
-    dispatch(registerSuccess(res));
+    dispatch(success(res));
   } catch (e) {
-    dispatch(registerError(e));
+    dispatch(failure(e));
   }
 };
 
@@ -62,12 +51,13 @@ const logoutAPI = async () => {
   return response.data;
 };
 export const logoutUser = () => async (dispatch: Dispatch<UserActions>) => {
+  const { request, success, failure } = logoutAsync;
   try {
-    dispatch(logoutRequest());
+    dispatch(request());
     const res = await logoutAPI();
-    dispatch(logoutSuccess(res));
+    dispatch(success(res));
   } catch (e) {
-    dispatch(logoutError(e));
+    dispatch(failure(e));
   }
 };
 
@@ -76,11 +66,12 @@ const authAPI = async () => {
   return response.data;
 };
 export const authUser = () => async (dispatch: Dispatch<UserActions>) => {
+  const { request, success, failure } = authAsync;
   try {
-    dispatch(authRequest());
+    dispatch(request());
     const res = await authAPI();
-    dispatch(authSuccess(res));
+    dispatch(success(res));
   } catch (e) {
-    dispatch(authError(e));
+    dispatch(failure(e));
   }
 };

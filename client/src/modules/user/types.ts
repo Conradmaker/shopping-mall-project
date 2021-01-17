@@ -1,17 +1,5 @@
-import {
-  loginError,
-  loginSuccess,
-  loginRequest,
-  registerSuccess,
-  registerRequest,
-  registerError,
-  logoutSuccess,
-  logoutRequest,
-  logoutError,
-  authSuccess,
-  authRequest,
-  authError,
-} from './actions';
+import { ActionType } from 'typesafe-actions';
+import { actions } from './actions';
 export interface loginData {
   loginSuccess: boolean;
   userId: string;
@@ -33,19 +21,7 @@ export interface UserData {
   image: string;
 }
 
-export type UserActions =
-  | ReturnType<typeof loginRequest>
-  | ReturnType<typeof loginSuccess>
-  | ReturnType<typeof loginError>
-  | ReturnType<typeof registerSuccess>
-  | ReturnType<typeof registerRequest>
-  | ReturnType<typeof registerError>
-  | ReturnType<typeof logoutSuccess>
-  | ReturnType<typeof logoutRequest>
-  | ReturnType<typeof logoutError>
-  | ReturnType<typeof authSuccess>
-  | ReturnType<typeof authRequest>
-  | ReturnType<typeof authError>;
+export type UserActions = ActionType<typeof actions>;
 
 export type UserState = {
   userLogin: { loading: boolean; data: null | loginData; error: Error | null };

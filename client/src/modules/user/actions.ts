@@ -1,67 +1,45 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { AxiosError } from 'axios';
 import { UserData, loginData, LogoutData, RegisterData } from './types';
+import { createAsyncAction } from 'typesafe-actions';
 
-const LOGIN_REQUEST = 'user/LOGIN_REQUEST' as const;
-const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS' as const;
-const LOGIN_ERROR = 'user/LOGIN_ERROR' as const;
+export const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
+export const LOGIN_ERROR = 'user/LOGIN_ERROR';
 
-const REGISTER_REQUEST = 'user/REGISTER_REQUEST' as const;
-const REGISTER_SUCCESS = 'user/REGISTER_SUCCESS' as const;
-const REGISTER_ERROR = 'user/REGISTER_ERROR' as const;
+export const REGISTER_REQUEST = 'user/REGISTER_REQUEST';
+export const REGISTER_SUCCESS = 'user/REGISTER_SUCCESS';
+export const REGISTER_ERROR = 'user/REGISTER_ERROR';
 
-const LOGOUT_REQUEST = 'user/LOGOUT_REQUEST' as const;
-const LOGOUT_SUCCESS = 'user/LOGOUT_SUCCESS' as const;
-const LOGOUT_ERROR = 'user/LOGOUT_ERROR' as const;
+export const LOGOUT_REQUEST = 'user/LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'user/LOGOUT_SUCCESS';
+export const LOGOUT_ERROR = 'user/LOGOUT_ERROR';
 
-const AUTH_REQUEST = 'user/AUTH_REQUEST' as const;
-const AUTH_SUCCESS = 'user/AUTH_SUCCESS' as const;
-const AUTH_ERROR = 'user/AUTH_ERROR' as const;
+export const AUTH_REQUEST = 'user/AUTH_REQUEST';
+export const AUTH_SUCCESS = 'user/AUTH_SUCCESS';
+export const AUTH_ERROR = 'user/AUTH_ERROR';
 
-export const loginRequest = () => ({
-  type: LOGIN_REQUEST,
-});
-export const loginSuccess = (data: loginData) => ({
-  type: LOGIN_SUCCESS,
-  payload: data,
-});
-export const loginError = (error: AxiosError) => ({
-  type: LOGIN_ERROR,
-  payload: error,
-});
+export const loginAsync = createAsyncAction(
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_ERROR
+)<undefined, loginData, AxiosError>();
 
-export const registerRequest = () => ({
-  type: REGISTER_REQUEST,
-});
-export const registerSuccess = (data: RegisterData) => ({
-  type: REGISTER_SUCCESS,
-  payload: data,
-});
-export const registerError = (error: AxiosError) => ({
-  type: REGISTER_ERROR,
-  payload: error,
-});
+export const registerAsync = createAsyncAction(
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_ERROR
+)<undefined, RegisterData, AxiosError>();
 
-export const logoutRequest = () => ({
-  type: LOGOUT_REQUEST,
-});
-export const logoutSuccess = (data: LogoutData) => ({
-  type: LOGOUT_SUCCESS,
-  payload: data,
-});
-export const logoutError = (error: AxiosError) => ({
-  type: LOGOUT_ERROR,
-  payload: error,
-});
+export const authAsync = createAsyncAction(
+  AUTH_REQUEST,
+  AUTH_SUCCESS,
+  AUTH_ERROR
+)<undefined, UserData, AxiosError>();
+export const logoutAsync = createAsyncAction(
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_ERROR
+)<undefined, LogoutData, AxiosError>();
 
-export const authRequest = () => ({
-  type: AUTH_REQUEST,
-});
-export const authSuccess = (data: UserData) => ({
-  type: AUTH_SUCCESS,
-  payload: data,
-});
-export const authError = (error: AxiosError) => ({
-  type: AUTH_ERROR,
-  payload: error,
-});
+export const actions = { loginAsync, registerAsync, logoutAsync, authAsync };
