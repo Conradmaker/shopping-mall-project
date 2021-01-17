@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../modules';
 import { authUser, logoutUser } from '../../modules/user/thunks';
 
 export default function LandingPage(): JSX.Element {
+  const { data } = useSelector((state: RootState) => state.user.userAuth);
   const dispatch = useDispatch();
   const onLogout = () => {
     dispatch(logoutUser());
@@ -13,7 +15,8 @@ export default function LandingPage(): JSX.Element {
   return (
     <div>
       <h1>메인</h1>
-      <button onClick={onLogout}>로그아웃</button>
+      <h2>{data?.isAuth && `${data?.name}님 어서오세요`}</h2>
+      {data && data.isAuth && <button onClick={onLogout}>로그아웃</button>}
     </div>
   );
 }
