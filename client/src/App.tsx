@@ -1,20 +1,24 @@
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import { Menu } from 'antd';
+import { Button, Menu } from 'antd';
 import {
   HomeOutlined,
   LoginOutlined,
+  UploadOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
 import LandingPage from './components/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import UploadProductPage from './components/UploadProductPage/UploadProductPage';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './modules';
+import { logoutUser } from './modules/user';
 
 function App(): JSX.Element {
   const { userAuth } = useSelector((state: RootState) => state.user);
+  const dispatch = useDispatch();
+
   return (
     <>
       <Menu mode="horizontal">
@@ -22,18 +26,27 @@ function App(): JSX.Element {
           <Link to="/">HOME</Link>
         </Menu.Item>
 
-        <Menu.Item key="login" icon={<LoginOutlined />}>
-          <Link to="/login">LOGIN</Link>
-        </Menu.Item>
+        {!userAuth.data?.isAuth ? (
+          <>
+            <Menu.Item key="login" icon={<LoginOutlined />}>
+              <Link to="/login">LOGIN</Link>
+            </Menu.Item>
 
-        <Menu.Item key="register" icon={<UserAddOutlined />}>
-          <Link to="/register">REGISTER</Link>
-        </Menu.Item>
-
-        {userAuth.data?.isAuth && (
-          <Menu.Item key="upload" icon={<UserAddOutlined />}>
-            <Link to="/product/upload">UPLOAD</Link>
-          </Menu.Item>
+            <Menu.Item key="register" icon={<UserAddOutlined />}>
+              <Link to="/register">REGISTER</Link>
+            </Menu.Item>
+          </>
+        ) : (
+          <>
+            <Menu.Item key="upload" icon={<UploadOutlined />}>
+              <Link to="/product/upload">UPLOAD</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Button type="primary" onClick={() => dispatch(logoutUser())}>
+                로그아웃
+              </Button>
+            </Menu.Item>
+          </>
         )}
       </Menu>
       <Switch>

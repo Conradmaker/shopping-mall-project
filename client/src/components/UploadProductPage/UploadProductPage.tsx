@@ -1,7 +1,11 @@
-import { Button, Form, Input, Select, Typography } from 'antd';
-import React, { useCallback, useState } from 'react';
+import { Button, Form, Input, message, Select, Typography } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
+import { RootState } from '../../modules';
+import { addProduct } from '../../modules/product';
 import FileUpload from '../common/utils/FileUpload';
 
 const UploadProductContainer = styled.div`
@@ -20,21 +24,56 @@ const continents: { key: number; value: string }[] = [
   { key: 6, value: 'Asustralia' },
   { key: 7, value: 'Antarctica' },
 ];
-export default function UploadProductPage(): JSX.Element {
+export default function UploadProductPage({
+  history,
+}: RouteComponentProps): JSX.Element {
+  const {
+    user: {
+      userAuth: { data: user },
+    },
+    product: {
+      addProduct: { data },
+    },
+  } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
   const [title, onChangeTitle] = useInput('');
   const [desc, onChangeDesc] = useInput('');
   const [price, onChangePrice] = useInput(0);
   const [continent, onChangeContinent] = useInput(1);
-  const [images, setImages] = useState<Array<string | null>>([]);
+  const [images, setImages] = useState<Array<string>>([]);
 
   const updateImages = useCallback((newImgs: string[]) => {
     setImages(newImgs);
   }, []);
-  console.log({ title, desc, price, continent, images });
+  const onSubmit = () => {
+    if (!title || !desc || !price || !continent || !images) {
+      return message.warn('모든값을 넣어주세요!');
+    }
+    if (!user?._id) {
+      message.warn('로그인이 필요한 서비스입니다.');
+      return history.replace('/login');
+    }
+    dispatch(
+      addProduct({
+        writer: user?._id,
+        title,
+        desc,
+        price,
+        continent,
+        images,
+      })
+    );
+  };
+  useEffect(() => {
+    if (data) {
+      message.success('상품등록 성공');
+      history.push('/');
+    }
+  }, [data]);
   return (
     <UploadProductContainer>
       <Typography.Title level={2}>Upload Travel Product</Typography.Title>
-      <Form>
+      <Form onFinish={onSubmit}>
         <FileUpload updateImages={updateImages} />
         <Form.Item
           name={['product', 'title']}

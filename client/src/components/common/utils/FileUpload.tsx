@@ -13,13 +13,18 @@ const DropzoneContainer = styled.div`
       cursor: pointer;
       width: 300px;
       height: 240px;
+      border-radius: 5px;
       border: 1px solid #aaa;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       svg {
         width: 40px;
         height: 40px;
+        color: #aaa;
+      }
+      span {
         color: #aaa;
       }
     }
@@ -65,6 +70,7 @@ export default function FileUpload({
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <PlusOutlined />
+              <span>이미지를 끌어넣거나, 눌러주세요</span>
             </div>
           </section>
         )}
@@ -73,7 +79,7 @@ export default function FileUpload({
         {images.map(image => (
           <img
             key={image}
-            src={`http://localhost:8000/${image}`}
+            src={`${process.env.REACT_APP_SERVER_HOST}${image}`}
             alt="image"
             onClick={deleteImage}
           />
