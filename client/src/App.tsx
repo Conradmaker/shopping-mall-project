@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import LandingPage from './components/LandingPage/LandingPage';
-import LoginPage from './components/LoginPage/LoginPage';
-import RegisterPage from './components/RegisterPage/RegisterPage';
 import { Menu } from 'antd';
 import {
   HomeOutlined,
   LoginOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
+import LandingPage from './components/LandingPage/LandingPage';
+import LoginPage from './components/LoginPage/LoginPage';
+import RegisterPage from './components/RegisterPage/RegisterPage';
 
 function App(): JSX.Element {
   return (

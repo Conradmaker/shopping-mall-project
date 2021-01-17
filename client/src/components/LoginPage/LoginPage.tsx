@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import { RootState } from '../../modules';
-import { authUser, loginUser } from '../../modules/user/thunks';
+import { authUser, loginUser } from '../../modules/user';
 
 export const LoginContainer = styled.div`
   height: 90vh;
@@ -32,6 +32,7 @@ export default function LoginPage({
   const {
     userAuth: { data },
     userLogin: { data: success },
+    errorMsg: error,
   } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({ email: '', password: '' });
@@ -47,16 +48,22 @@ export default function LoginPage({
   const onSubmit = () => {
     dispatch(loginUser(inputs));
   };
+
   useEffect(() => {
     dispatch(authUser());
   }, []);
 
-  if (success) {
-    history.push('/');
-  }
-  if (data && data.isAuth) {
-    history.push('/');
-  }
+  useEffect(() => {
+    if (data && data.isAuth) {
+      history.push('/');
+    }
+    if (success) {
+      message.success('로그인 성공');
+      history.push('/');
+    } else if (error) {
+      message.error(error);
+    }
+  }, [error, success, data]);
 
   return (
     <LoginContainer>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
+import { AxiosError } from 'axios';
 import { UserData, loginData, LogoutData, RegisterData } from './types';
 
 const LOGIN_REQUEST = 'user/LOGIN_REQUEST' as const;
@@ -25,7 +25,7 @@ export const loginSuccess = (data: loginData) => ({
   type: LOGIN_SUCCESS,
   payload: data,
 });
-export const loginError = (error: Error) => ({
+export const loginError = (error: AxiosError) => ({
   type: LOGIN_ERROR,
   payload: error,
 });
@@ -37,7 +37,7 @@ export const registerSuccess = (data: RegisterData) => ({
   type: REGISTER_SUCCESS,
   payload: data,
 });
-export const registerError = (error: Error) => ({
+export const registerError = (error: AxiosError) => ({
   type: REGISTER_ERROR,
   payload: error,
 });
@@ -49,7 +49,7 @@ export const logoutSuccess = (data: LogoutData) => ({
   type: LOGOUT_SUCCESS,
   payload: data,
 });
-export const logoutError = (error: Error) => ({
+export const logoutError = (error: AxiosError) => ({
   type: LOGOUT_ERROR,
   payload: error,
 });
@@ -61,7 +61,7 @@ export const authSuccess = (data: UserData) => ({
   type: AUTH_SUCCESS,
   payload: data,
 });
-export const authError = (error: Error) => ({
+export const authError = (error: AxiosError) => ({
   type: AUTH_ERROR,
   payload: error,
 });

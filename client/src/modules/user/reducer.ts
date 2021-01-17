@@ -4,6 +4,7 @@ const initialState: UserState = {
   userLogin: { loading: false, data: null, error: null },
   userRegister: { loading: false, data: null, error: null },
   userAuth: { loading: false, data: null, error: null },
+  errorMsg: null,
 };
 
 export default function user(
@@ -24,7 +25,12 @@ export default function user(
     case 'user/LOGIN_ERROR':
       return {
         ...state,
-        userLogin: { loading: false, data: null, error: action.payload },
+        userLogin: {
+          loading: false,
+          data: null,
+          error: action.payload,
+        },
+        errorMsg: action.payload.response?.data,
       };
 
     case 'user/REGISTER_REQUEST':
@@ -41,6 +47,7 @@ export default function user(
       return {
         ...state,
         userRegister: { loading: false, data: null, error: action.payload },
+        errorMsg: action.payload.response?.data,
       };
 
     case 'user/LOGOUT_REQUEST':
@@ -58,12 +65,14 @@ export default function user(
       return {
         ...state,
         userLogin: { loading: false, data: null, error: action.payload },
+        errorMsg: action.payload.response?.data,
       };
 
     case 'user/AUTH_REQUEST':
       return {
         ...state,
         userAuth: { loading: true, data: null, error: null },
+        errorMsg: null,
       };
     case 'user/AUTH_SUCCESS':
       return {
@@ -74,6 +83,7 @@ export default function user(
       return {
         ...state,
         userAuth: { loading: false, data: null, error: action.payload },
+        errorMsg: action.payload.response?.data,
       };
     default:
       return state;

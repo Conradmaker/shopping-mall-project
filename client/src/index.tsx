@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import 'antd/dist/antd.css';
-import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import Thunk from 'redux-thunk';
-import rootReducer from './modules';
+import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import Thunk from 'redux-thunk';
+import App from './App';
+import rootReducer from './modules';
+import 'antd/dist/antd.css';
 
 const store = createStore(
   rootReducer,

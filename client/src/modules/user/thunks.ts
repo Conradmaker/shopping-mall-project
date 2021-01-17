@@ -36,6 +36,7 @@ export const loginUser = (data: loginRequsetData) => async (
     const res = await loginAPI(data);
     dispatch(loginSuccess(res));
   } catch (e) {
+    console.error(e);
     dispatch(loginError(e));
   }
 };

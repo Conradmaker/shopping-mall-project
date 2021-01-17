@@ -59,4 +59,5 @@ export type UserState = {
     data: null | UserData;
     error: Error | null;
   };
+  errorMsg: null | string;
 };

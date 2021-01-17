@@ -1,9 +1,9 @@
-import { Button, Form, Input } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { Button, Form, Input, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { RootState } from '../../modules';
-import { authUser, registerUser } from '../../modules/user/thunks';
+import { authUser, registerUser } from '../../modules/user';
 import { LoginContainer } from '../LoginPage/LoginPage';
 
 export default function RegisterPage({
@@ -12,6 +12,7 @@ export default function RegisterPage({
   const {
     userAuth: { data },
     userRegister: { data: success, loading },
+    errorMsg: error,
   } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
@@ -22,6 +23,7 @@ export default function RegisterPage({
   });
   const [passwordError, setPasswordError] = useState(false);
   const { email, password, name, passwordCheck } = inputs;
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputs({
@@ -32,6 +34,7 @@ export default function RegisterPage({
       setPasswordError(!(value === password));
     }
   };
+
   const onSubmit = () => {
     if (passwordError) {
       return alert('비밀번호가 일치하지 않습니다.');
@@ -40,16 +43,22 @@ export default function RegisterPage({
     history.push('/');
   };
 
-  if (data && data.isAuth) {
-    history.push('/');
-  }
-  if (success) {
-    alert('회원가입에 성공하였습니다.');
-    history.push('/login');
-  }
   useEffect(() => {
     dispatch(authUser());
   }, []);
+
+  useEffect(() => {
+    if (data && data.isAuth) {
+      history.push('/');
+    }
+    if (success) {
+      message.success('회원가입 성공');
+      history.push('/login');
+    } else if (error) {
+      message.error(error);
+    }
+  }, [data, success]);
+
   return (
     <LoginContainer>
       <Form onFinish={onSubmit}>
