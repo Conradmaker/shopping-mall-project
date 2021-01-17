@@ -9,8 +9,12 @@ import {
 import LandingPage from './components/LandingPage/LandingPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
+import UploadProductPage from './components/UploadProductPage/UploadProductPage';
+import { useSelector } from 'react-redux';
+import { RootState } from './modules';
 
 function App(): JSX.Element {
+  const { userAuth } = useSelector((state: RootState) => state.user);
   return (
     <>
       <Menu mode="horizontal">
@@ -25,11 +29,18 @@ function App(): JSX.Element {
         <Menu.Item key="register" icon={<UserAddOutlined />}>
           <Link to="/register">REGISTER</Link>
         </Menu.Item>
+
+        {userAuth.data?.isAuth && (
+          <Menu.Item key="upload" icon={<UserAddOutlined />}>
+            <Link to="/product/upload">UPLOAD</Link>
+          </Menu.Item>
+        )}
       </Menu>
       <Switch>
         <Route path="/" component={LandingPage} exact />
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
+        <Route path="/product/upload" component={UploadProductPage} />
       </Switch>
     </>
   );
