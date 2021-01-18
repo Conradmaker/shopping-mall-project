@@ -2,6 +2,7 @@ import { Button, Col, Row } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import useInput from '../../hooks/useInput';
 import { RootState } from '../../modules';
 import { Filter, loadProduct } from '../../modules/product';
 import { authUser } from '../../modules/user';
@@ -9,6 +10,7 @@ import CheckBox from './CheckBox';
 import { continents, price } from './data';
 import ListItem from './ListItem';
 import RadioBox from './RadioBox';
+import SearchBar from './SearchBar';
 
 const LandingPageContaiber = styled.main`
   max-width: 1000px;
@@ -33,6 +35,7 @@ export default function LandingPage(): JSX.Element {
     continents: [],
     price: [],
   });
+  const [searchValue, onChangeSearchValue] = useInput('');
 
   const onLoadMore = useCallback(() => {
     setSkip(skip + 8);
@@ -62,9 +65,9 @@ export default function LandingPage(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    const data = { skip, limit: 8, loadMore: skip > 0, filters };
+    const data = { skip, limit: 8, loadMore: skip > 0, filters, searchValue };
     dispatch(loadProduct(data));
-  }, [skip, filters]);
+  }, [skip, filters, searchValue]);
 
   if (!data) return <div>데이터가 없어요ㅠㅠ</div>;
   return (
@@ -82,6 +85,7 @@ export default function LandingPage(): JSX.Element {
           <RadioBox data={price} checkToggle={onChangePrice} title="Prices" />
         </Col>
       </Row>
+      <SearchBar value={searchValue} onChange={onChangeSearchValue} />
 
       <Row gutter={[16, 16]}>
         {data.map(v => (

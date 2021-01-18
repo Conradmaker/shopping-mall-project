@@ -8,7 +8,7 @@ import {
   LOAD_PRODUCT_REQUEST,
   LOAD_PRODUCT_SUCCESS,
 } from './actions';
-import { Product, ProductActions, ProductState } from './types';
+import { ProductActions, ProductState } from './types';
 
 const initialState: ProductState = {
   addProduct: { loading: false, data: null, error: null },

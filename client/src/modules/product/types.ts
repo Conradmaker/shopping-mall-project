@@ -22,6 +22,7 @@ export interface LoadOpt {
   skip: number;
   loadMore: boolean;
   filters: Filter;
+  searchValue?: string;
 }
 
 export type ProductActions =
