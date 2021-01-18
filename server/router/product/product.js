@@ -37,6 +37,21 @@ router.post('/add',async(req,res,next)=>{
        res.status(201).json(product)
     } catch (e) {
         res.status(400).send('상품등록 실패')
+        next(e)
+    }
+})
+
+//NOTE:모든상품정조
+router.post('/load',async(req,res,next)=>{
+    const limit = req.body.limit ? parseInt(req.body.limit):8;
+    const skip = req.body.skip?parseInt(req.body.skip):0;
+    console.log(limit,skip)
+    try {
+        const productInfo= await Product.find().populate("writer").skip(skip).limit(limit);
+        res.status(200).json(productInfo)
+    } catch (e) {
+        res.status(400).send('상품조회 실패');
+        next(e);
     }
 })
 

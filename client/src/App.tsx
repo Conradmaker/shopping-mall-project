@@ -42,6 +42,11 @@ function App(): JSX.Element {
               <Link to="/product/upload">UPLOAD</Link>
             </Menu.Item>
             <Menu.Item>
+              <span>
+                {userAuth.data?.isAuth && `${userAuth.data?.name}님 어서오세요`}
+              </span>
+            </Menu.Item>
+            <Menu.Item>
               <Button type="primary" onClick={() => dispatch(logoutUser())}>
                 로그아웃
               </Button>

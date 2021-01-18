@@ -11,11 +11,16 @@ export interface Product {
   continent: number;
   images: Array<string>;
 }
-
+export interface LoadOpt {
+  limit: number;
+  skip: number;
+  loadMore: boolean;
+}
 export type ProductActions =
   | ActionType<typeof actions>
   | ReturnType<typeof authAsync.request>;
 export type ProductState = {
   addProduct: { loading: boolean; data: null | Product; error: null | Error };
+  Products: { loading: boolean; data: null | Product[]; error: null | Error };
   errorMsg: string | null;
 };
