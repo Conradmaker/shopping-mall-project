@@ -1,5 +1,6 @@
 import { Card, Carousel } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Product } from '../../modules/product/types';
 
@@ -24,13 +25,15 @@ export default function ListItem({ product }: ListItemProps): JSX.Element {
     <Card
       hoverable
       cover={
-        <Carousel autoplay autoplaySpeed={2000}>
-          {product.images.map(image => (
-            <ImageBox key={image}>
-              <img alt="image" src={`http://localhost:8000/${image}`} />
-            </ImageBox>
-          ))}
-        </Carousel>
+        <Link to={`/detail/${product._id}`}>
+          <Carousel autoplay autoplaySpeed={2000}>
+            {product.images.map(image => (
+              <ImageBox key={image}>
+                <img alt="image" src={`http://localhost:8000/${image}`} />
+              </ImageBox>
+            ))}
+          </Carousel>
+        </Link>
       }
     >
       <Card.Meta title={product.title} description={product.price} />

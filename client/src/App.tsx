@@ -14,6 +14,7 @@ import UploadProductPage from './components/UploadProductPage/UploadProductPage'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './modules';
 import { logoutUser } from './modules/user';
+import DetailPage from './components/DetailPage/DetailPage';
 
 function App(): JSX.Element {
   const { userAuth } = useSelector((state: RootState) => state.user);
@@ -59,6 +60,7 @@ function App(): JSX.Element {
         <Route path="/login" component={LoginPage} />
         <Route path="/register" component={RegisterPage} />
         <Route path="/product/upload" component={UploadProductPage} />
+        <Route path="/detail/:id" component={DetailPage} />
       </Switch>
     </>
   );

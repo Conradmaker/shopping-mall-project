@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { addProductAsync, loadProductAsync } from './actions';
+import { addProductAsync, loadDetailAsync, loadProductAsync } from './actions';
 import { LoadOpt, Product, ProductActions } from './types';
 
 const addProductApi = async (data: Product) => {
@@ -33,6 +33,26 @@ export const loadProduct = (opt: LoadOpt) => async (
   try {
     dispatch(request());
     const data = await loadProductApi(opt);
+    dispatch(success(data));
+  } catch (e) {
+    console.error(e);
+    dispatch(failure(e));
+  }
+};
+
+const loadDetailApi = async (id: string) => {
+  const response = await axios.get<Product>(
+    `/api/product/detail/${id}?type=single`
+  );
+  return response.data;
+};
+export const loadDetail = (id: string) => async (
+  dispatch: Dispatch<ProductActions>
+): Promise<void> => {
+  const { request, success, failure } = loadDetailAsync;
+  try {
+    dispatch(request());
+    const data = await loadDetailApi(id);
     dispatch(success(data));
   } catch (e) {
     console.error(e);

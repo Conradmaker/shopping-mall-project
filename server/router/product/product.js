@@ -70,4 +70,18 @@ router.post('/load',async(req,res,next)=>{
     }
 })
 
+//NOTE:디테일상품정보
+router.get('/detail/:id',async(req,res,next)=>{
+    const type = req.query.type;
+    const id = req.params.id
+
+    try {
+        const productDetail = await Product.findOne({_id:id}).populate('writer')
+        res.status(200).json(productDetail)
+    } catch (e) {
+        res.status(400).send('상품정보 조회에 실패하였습니다.');
+        next(e);
+    }
+})
+
 module.exports = router

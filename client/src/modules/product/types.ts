@@ -6,10 +6,12 @@ export interface Product {
   _id?: string;
   writer: string;
   title: string;
-  desc: string;
+  description: string;
   price: number;
   continent: number;
   images: Array<string>;
+  sold?: number;
+  views?: number;
 }
 
 export interface Filter {
@@ -31,5 +33,6 @@ export type ProductActions =
 export type ProductState = {
   addProduct: { loading: boolean; data: null | Product; error: null | Error };
   Products: { loading: boolean; data: null | Product[]; error: null | Error };
+  Detail: { loading: boolean; data: null | Product; error: null | Error };
   errorMsg: string | null;
 };

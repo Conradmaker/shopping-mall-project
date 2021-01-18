@@ -50,7 +50,7 @@ export default function UploadProductPage({
       addProduct({
         writer: user?._id,
         title,
-        desc,
+        description: desc,
         price,
         continent,
         images,
