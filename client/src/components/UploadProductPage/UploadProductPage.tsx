@@ -7,6 +7,7 @@ import useInput from '../../hooks/useInput';
 import { RootState } from '../../modules';
 import { addProduct } from '../../modules/product';
 import FileUpload from '../common/utils/FileUpload';
+import { continents } from '../LandingPage/data';
 
 const UploadProductContainer = styled.div`
   max-width: 700px;
@@ -15,15 +16,7 @@ const UploadProductContainer = styled.div`
     width: 100px;
   }
 `;
-const continents: { key: number; value: string }[] = [
-  { key: 1, value: 'Africa' },
-  { key: 2, value: 'Europe' },
-  { key: 3, value: 'Asia' },
-  { key: 4, value: 'North America' },
-  { key: 5, value: 'South America' },
-  { key: 6, value: 'Asustralia' },
-  { key: 7, value: 'Antarctica' },
-];
+
 export default function UploadProductPage({
   history,
 }: RouteComponentProps): JSX.Element {

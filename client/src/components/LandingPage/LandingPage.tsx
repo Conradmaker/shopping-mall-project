@@ -3,9 +3,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { RootState } from '../../modules';
-import { loadProduct } from '../../modules/product';
+import { Filter, loadProduct } from '../../modules/product';
 import { authUser } from '../../modules/user';
+import CheckBox from './CheckBox';
+import { continents, price } from './data';
 import ListItem from './ListItem';
+import RadioBox from './RadioBox';
 
 const LandingPageContaiber = styled.main`
   max-width: 1000px;
@@ -23,24 +26,63 @@ const LandingPageContaiber = styled.main`
 export default function LandingPage(): JSX.Element {
   const {
     Products: { data },
-    errorMsg,
   } = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch();
   const [skip, setSkip] = useState(0);
+  const [filters, setFilters] = useState<Filter>({
+    continents: [],
+    price: [],
+  });
+
   const onLoadMore = useCallback(() => {
     setSkip(skip + 8);
   }, []);
+
+  const onChangeConti = (key: number) => {
+    setSkip(0);
+    if (filters.continents.indexOf(key) === -1) {
+      setFilters({ ...filters, continents: filters.continents.concat(key) });
+    } else {
+      setFilters({
+        ...filters,
+        continents: filters.continents.filter(v => v !== key),
+      });
+    }
+  };
+  const onChangePrice = (key: number) => {
+    setSkip(0);
+    const selectedPrice = price.filter(v => v.key === key)[0];
+    setFilters({
+      ...filters,
+      price: selectedPrice.array,
+    });
+  };
   useEffect(() => {
     dispatch(authUser());
   }, []);
+
   useEffect(() => {
-    const data = { skip, limit: 8, loadMore: true };
+    const data = { skip, limit: 8, loadMore: skip > 0, filters };
     dispatch(loadProduct(data));
-  }, [skip]);
+  }, [skip, filters]);
+
   if (!data) return <div>데이터가 없어요ㅠㅠ</div>;
   return (
     <LandingPageContaiber>
       <h1>메인페이지</h1>
+      <Row gutter={[16, 16]}>
+        <Col lg={12} sm={24}>
+          <CheckBox
+            title="Continents"
+            data={continents}
+            checkToggle={onChangeConti}
+          />
+        </Col>
+        <Col lg={12} sm={24}>
+          <RadioBox data={price} checkToggle={onChangePrice} title="Prices" />
+        </Col>
+      </Row>
+
       <Row gutter={[16, 16]}>
         {data.map(v => (
           <Col lg={6} md={8} sm={24} key={v._id}>
@@ -48,7 +90,7 @@ export default function LandingPage(): JSX.Element {
           </Col>
         ))}
       </Row>
-      {data.length < 9 && (
+      {data.length === 8 && (
         <div className="btnWrapper">
           <Button type="primary" onClick={onLoadMore}>
             더보기

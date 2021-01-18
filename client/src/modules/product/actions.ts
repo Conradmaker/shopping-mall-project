@@ -20,6 +20,6 @@ export const loadProductAsync = createAsyncAction(
   LOAD_PRODUCT_REQUEST,
   LOAD_PRODUCT_SUCCESS,
   LOAD_PRODUCT_ERROR
-)<undefined, Product[], AxiosError>();
+)<undefined, { product: Product[]; loadMore: boolean }, AxiosError>();
 
 export const actions = { addProductAsync, loadProductAsync };

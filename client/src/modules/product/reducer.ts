@@ -40,8 +40,10 @@ const product = createReducer<ProductState, ProductActions>(initialState, {
     Products: {
       loading: false,
       data: state.Products.data
-        ? state.Products.data.concat(action.payload)
-        : action.payload,
+        ? action.payload.loadMore
+          ? state.Products.data.concat(action.payload.product)
+          : action.payload.product
+        : action.payload.product,
       error: null,
     },
   }),

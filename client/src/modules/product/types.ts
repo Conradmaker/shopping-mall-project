@@ -11,11 +11,19 @@ export interface Product {
   continent: number;
   images: Array<string>;
 }
+
+export interface Filter {
+  continents: number[];
+  price: number[];
+}
+
 export interface LoadOpt {
   limit: number;
   skip: number;
   loadMore: boolean;
+  filters: Filter;
 }
+
 export type ProductActions =
   | ActionType<typeof actions>
   | ReturnType<typeof authAsync.request>;

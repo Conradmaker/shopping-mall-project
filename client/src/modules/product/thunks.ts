@@ -20,7 +20,10 @@ export const addProduct = (product: Product) => async (
   }
 };
 const loadProductApi = async (opt: LoadOpt) => {
-  const response = await axios.post<Product[]>('/api/product/load', opt);
+  const response = await axios.post<{ product: Product[]; loadMore: boolean }>(
+    '/api/product/load',
+    opt
+  );
   return response.data;
 };
 export const loadProduct = (opt: LoadOpt) => async (
