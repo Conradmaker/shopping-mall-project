@@ -45,10 +45,25 @@ router.post('/add',async(req,res,next)=>{
 router.post('/load',async(req,res,next)=>{
     const limit = req.body.limit ? parseInt(req.body.limit):8;
     const skip = req.body.skip?parseInt(req.body.skip):0;
-    console.log(limit,skip)
+    const {filters:{continents,price},searchValue} = req.body;
+    const findArgs = {};
+    if(continents.length>0){
+        findArgs.continents = continents
+    }
+    if(price.length>0){
+        findArgs.price = {
+            $gte:price[0],
+            $lte:price[1]
+        }
+    }
     try {
-        const productInfo= await Product.find().populate("writer").skip(skip).limit(limit);
-        res.status(200).json(productInfo)
+        if(searchValue.length>0){
+            const productInfo= await Product.find(findArgs).find({$text:{$search:searchValue}}).populate("writer").skip(skip).limit(limit);
+            res.status(200).json({product:productInfo,loadMore:req.body.loadMore})
+        }else{
+            const productInfo= await Product.find(findArgs).populate("writer").skip(skip).limit(limit);
+            res.status(200).json({product:productInfo,loadMore:req.body.loadMore})
+        }
     } catch (e) {
         res.status(400).send('상품조회 실패');
         next(e);

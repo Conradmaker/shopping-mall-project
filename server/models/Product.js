@@ -25,12 +25,28 @@ const productSchema = mongoose.Schema({
         maxlangth:100,
         default:0
     },
+    continents:{
+        type:Number,
+        default:1
+    },
     views:{
         type:Number,
         default:0
     },
 
 },{timestamps:true})
+
+productSchema.index({
+    //검색가능한것들
+    title:'text',
+    description:'text'
+},{
+    weights:{  
+        //검색중요도
+        title:5,
+        description:1
+    }
+})
 
 const Product = mongoose.model('Product',productSchema)
 
