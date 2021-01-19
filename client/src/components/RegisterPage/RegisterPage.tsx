@@ -10,8 +10,8 @@ export default function RegisterPage({
   history,
 }: RouteComponentProps): JSX.Element {
   const {
-    userAuth: { data },
     userRegister: { data: success, loading },
+    userInfo,
     errorMsg: error,
   } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ export default function RegisterPage({
   }, []);
 
   useEffect(() => {
-    if (data && data.isAuth) {
+    if (userInfo) {
       history.push('/');
     }
     if (success) {
@@ -57,7 +57,7 @@ export default function RegisterPage({
     } else if (error) {
       message.error(error);
     }
-  }, [data, success]);
+  }, [userInfo, success]);
 
   return (
     <LoginContainer>

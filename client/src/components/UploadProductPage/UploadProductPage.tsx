@@ -21,9 +21,7 @@ export default function UploadProductPage({
   history,
 }: RouteComponentProps): JSX.Element {
   const {
-    user: {
-      userAuth: { data: user },
-    },
+    user: { userInfo },
     product: {
       addProduct: { data },
     },
@@ -42,13 +40,13 @@ export default function UploadProductPage({
     if (!title || !desc || !price || !continent || !images) {
       return message.warn('모든값을 넣어주세요!');
     }
-    if (!user?._id) {
+    if (!userInfo) {
       message.warn('로그인이 필요한 서비스입니다.');
       return history.replace('/login');
     }
     dispatch(
       addProduct({
-        writer: user?._id,
+        writer: userInfo._id as string,
         title,
         description: desc,
         price,

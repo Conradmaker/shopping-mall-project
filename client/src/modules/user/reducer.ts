@@ -1,4 +1,5 @@
 import { createReducer } from 'typesafe-actions';
+import { Product } from '../product';
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -12,6 +13,15 @@ import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_ERROR,
+  ADD_CART_REQUEST,
+  ADD_CART_SUCCESS,
+  ADD_CART_ERROR,
+  LOAD_CART_REQUEST,
+  LOAD_CART_SUCCESS,
+  LOAD_CART_ERROR,
+  REMOVE_CART_SUCCESS,
+  REMOVE_CART_REQUEST,
+  REMOVE_CART_ERROR,
 } from './actions';
 import { UserActions, UserState } from './types';
 
@@ -19,6 +29,10 @@ const initialState: UserState = {
   userLogin: { loading: false, data: null, error: null },
   userRegister: { loading: false, data: null, error: null },
   userAuth: { loading: false, data: null, error: null },
+  addCart: { loading: false, data: null, error: null },
+  loadCart: { loading: false, data: null, error: null },
+  removeCart: { loading: false, data: null, error: null },
+  userInfo: null,
   errorMsg: null,
 };
 
@@ -60,7 +74,7 @@ const user = createReducer<UserState, UserActions>(initialState, {
   [LOGOUT_SUCCESS]: state => ({
     ...state,
     userLogin: { loading: false, data: null, error: null },
-    userAuth: { ...state.userAuth, data: null },
+    userInfo: null,
   }),
   [LOGOUT_ERROR]: (state, action) => ({
     ...state,
@@ -74,11 +88,61 @@ const user = createReducer<UserState, UserActions>(initialState, {
   }),
   [AUTH_SUCCESS]: (state, action) => ({
     ...state,
-    userAuth: { loading: false, data: action.payload, error: null },
+    userAuth: { loading: false, data: true, error: null },
+    userInfo: action.payload,
   }),
   [AUTH_ERROR]: (state, action) => ({
     ...state,
     userAuth: { loading: false, data: null, error: action.payload },
+    errorMsg: action.payload.response?.data,
+  }),
+  [ADD_CART_REQUEST]: state => ({
+    ...state,
+    addCart: { loading: true, data: null, error: null },
+    errorMsg: null,
+  }),
+  [ADD_CART_SUCCESS]: (state, action) => ({
+    ...state,
+    addCart: { loading: false, data: true, error: null },
+    userInfo: { ...state.userInfo, cart: action.payload },
+  }),
+  [ADD_CART_ERROR]: (state, action) => ({
+    ...state,
+    addCart: { loading: false, data: null, error: action.payload },
+    errorMsg: action.payload.response?.data,
+  }),
+  [LOAD_CART_REQUEST]: state => ({
+    ...state,
+    loadCart: { loading: true, data: null, error: null },
+    errorMsg: null,
+  }),
+  [LOAD_CART_SUCCESS]: (state, action) => ({
+    ...state,
+    loadCart: { loading: false, data: action.payload, error: null },
+  }),
+  [LOAD_CART_ERROR]: (state, action) => ({
+    ...state,
+    loadCart: { loading: false, data: null, error: action.payload },
+    errorMsg: action.payload.response?.data,
+  }),
+  [REMOVE_CART_REQUEST]: state => ({
+    ...state,
+    removeCart: { loading: true, data: null, error: null },
+    errorMsg: null,
+  }),
+  [REMOVE_CART_SUCCESS]: (state, action) => ({
+    ...state,
+    removeCart: { loading: false, data: true, error: null },
+    loadCart: {
+      ...state.loadCart,
+      data: (state.loadCart.data as Product[]).filter(
+        v => v._id !== action.payload.id
+      ),
+    },
+  }),
+  [REMOVE_CART_ERROR]: (state, action) => ({
+    ...state,
+    removeCart: { loading: false, data: null, error: action.payload },
     errorMsg: action.payload.response?.data,
   }),
 });

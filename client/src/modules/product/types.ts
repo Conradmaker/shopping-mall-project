@@ -12,6 +12,7 @@ export interface Product {
   images: Array<string>;
   sold?: number;
   views?: number;
+  quantity?: number;
 }
 
 export interface Filter {

@@ -30,7 +30,7 @@ export default function LoginPage({
   history,
 }: RouteComponentProps): JSX.Element {
   const {
-    userAuth: { data },
+    userInfo,
     userLogin: { data: success },
     errorMsg: error,
   } = useSelector((state: RootState) => state.user);
@@ -54,7 +54,7 @@ export default function LoginPage({
   }, []);
 
   useEffect(() => {
-    if (data && data.isAuth) {
+    if (userInfo) {
       history.push('/');
     }
     if (success) {
@@ -63,7 +63,7 @@ export default function LoginPage({
     } else if (error) {
       message.error(error);
     }
-  }, [error, success, data]);
+  }, [error, success, userInfo]);
 
   return (
     <LoginContainer>
