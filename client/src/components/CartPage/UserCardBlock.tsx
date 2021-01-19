@@ -42,7 +42,7 @@ function TableItem({ item }: { item: Product }): JSX.Element {
         />
       </td>
       <td>{item.quantity} 개</td>
-      <td>{item.price} ₩</td>
+      <td>{item.price} $</td>
       <td>
         <Button onClick={onRemove}>삭제</Button>
       </td>
@@ -50,10 +50,12 @@ function TableItem({ item }: { item: Product }): JSX.Element {
   );
 }
 
-type UserCardBlock = {
+type UserCardBlockProps = {
   list: Product[];
 };
-export default function UserCardBlock({ list }: UserCardBlock): JSX.Element {
+export default function UserCardBlock({
+  list,
+}: UserCardBlockProps): JSX.Element {
   return (
     <div>
       <Table>

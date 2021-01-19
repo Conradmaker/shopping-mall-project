@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { RootState } from '../../modules';
 import { Product } from '../../modules/product';
 import { loadCart } from '../../modules/user';
+import Paypal from '../common/Paypal';
 import UserCardBlock from './UserCardBlock';
 
 const CartPageContainer = styled.div`
@@ -14,6 +15,12 @@ const CartPageContainer = styled.div`
   h1 {
     font-size: 30px;
     font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  h2 {
+    margin-top: 30px;
+    margin-bottom: 10px;
   }
 `;
 export default function CartPage({
@@ -23,6 +30,9 @@ export default function CartPage({
     userInfo,
     loadCart: { data },
   } = useSelector((state: RootState) => state.user);
+  const {
+    paypal: { data: success },
+  } = useSelector((state: RootState) => state.payment);
   const dispatch = useDispatch();
   const [total, setTotal] = useState(0);
 
@@ -34,8 +44,13 @@ export default function CartPage({
       acc = acc + v.price * v.quantity;
       return acc;
     }, 0);
-    console.log(total);
     setTotal(total);
+  };
+  const goHome = () => {
+    history.replace('/');
+  };
+  const goBuyList = () => {
+    history.replace(`/buylist/${userInfo?._id}`);
   };
   useEffect(() => {
     if (!userInfo) {
@@ -52,7 +67,24 @@ export default function CartPage({
     calculateTotal(data);
   }, [data]);
 
-  if (data?.length === 0)
+  if (success) {
+    return (
+      <Result
+        status="success"
+        title="구매가 완료되었습니다!"
+        subTitle="-Thank you for your buy-"
+        extra={[
+          <Button type="primary" key="console" onClick={goBuyList}>
+            구매내역
+          </Button>,
+          <Button onClick={goHome} key="buy">
+            홈으로
+          </Button>,
+        ]}
+      />
+    );
+  }
+  if (data?.length === 0 || !data)
     return (
       <Result
         status="404"
@@ -71,6 +103,7 @@ export default function CartPage({
       <h1>My Cart</h1>
       <UserCardBlock list={data} />
       <h2>Total Amount:{total} $</h2>
+      <Paypal priceTotal={total} />
     </CartPageContainer>
   );
 }

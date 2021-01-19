@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ActionType } from 'typesafe-actions';
+import { paypalSuccessAsync } from '../Payment';
 import { Product } from '../product';
 import { actions } from './actions';
 export interface loginData {
@@ -30,7 +31,9 @@ export interface UserData {
   history?: any[];
 }
 
-export type UserActions = ActionType<typeof actions>;
+export type UserActions =
+  | ActionType<typeof actions>
+  | ReturnType<typeof paypalSuccessAsync.success>;
 
 export type UserState = {
   userLogin: { loading: boolean; data: null | loginData; error: Error | null };
