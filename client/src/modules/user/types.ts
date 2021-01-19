@@ -28,9 +28,16 @@ export interface UserData {
   role?: number;
   image?: string;
   cart?: Cart[];
-  history?: any[];
+  history?: History[];
 }
-
+export interface History {
+  dataOfPurchase: number;
+  name: string;
+  id: string;
+  price: number;
+  quantity: number;
+  paymentId: string;
+}
 export type UserActions =
   | ActionType<typeof actions>
   | ReturnType<typeof paypalSuccessAsync.success>;

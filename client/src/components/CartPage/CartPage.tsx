@@ -46,12 +46,7 @@ export default function CartPage({
     }, 0);
     setTotal(total);
   };
-  const goHome = () => {
-    history.replace('/');
-  };
-  const goBuyList = () => {
-    history.replace(`/buylist/${userInfo?._id}`);
-  };
+
   useEffect(() => {
     if (!userInfo) {
       message.warning('로그인이 필요한 서비스입니다.');
@@ -74,10 +69,14 @@ export default function CartPage({
         title="구매가 완료되었습니다!"
         subTitle="-Thank you for your buy-"
         extra={[
-          <Button type="primary" key="console" onClick={goBuyList}>
+          <Button
+            type="primary"
+            key="console"
+            onClick={() => history.push('/history')}
+          >
             구매내역
           </Button>,
-          <Button onClick={goHome} key="buy">
+          <Button onClick={() => history.push('/')} key="buy">
             홈으로
           </Button>,
         ]}

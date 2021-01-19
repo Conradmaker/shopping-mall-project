@@ -17,6 +17,7 @@ import { RootState } from './modules';
 import { logoutUser } from './modules/user';
 import DetailPage from './components/DetailPage/DetailPage';
 import CartPage from './components/CartPage/CartPage';
+import HistoryPage from './components/HistoryPage/HistoryPage';
 
 function App(): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
@@ -46,7 +47,9 @@ function App(): JSX.Element {
               <Link to="/product/upload">UPLOAD</Link>
             </Menu.Item>
             <Menu.Item>
-              <span>{userInfo && `${userInfo?.name}님 어서오세요`}</span>
+              <Link to="/history">
+                <span>{userInfo && `${userInfo?.name}님 어서오세요`}</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="cart">
               <Badge count={cartLength}>
@@ -70,6 +73,7 @@ function App(): JSX.Element {
         <Route path="/product/upload" component={UploadProductPage} />
         <Route path="/detail/:id" component={DetailPage} />
         <Route path="/user/cart" component={CartPage} />
+        <Route path="/history" component={HistoryPage} />
       </Switch>
     </>
   );
