@@ -41,7 +41,7 @@ router.post('/add',async(req,res,next)=>{
     }
 })
 
-//NOTE:모든상품정조
+//NOTE:모든상품정보
 router.post('/load',async(req,res,next)=>{
     const limit = req.body.limit ? parseInt(req.body.limit):8;
     const skip = req.body.skip?parseInt(req.body.skip):0;

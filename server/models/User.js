@@ -8,6 +8,8 @@ const userSchema = mongoose.Schema({
   password: {type: String, minLength: 5},
   lastname: {type: String, maxLength: 50},
   role: {type: Number, default: 0},
+  cart:{type:Array, default:[]},
+  history:{type:Array,default:[]},
   image: String,
   token: {type: String},
   tokenExp: {type: Number},
