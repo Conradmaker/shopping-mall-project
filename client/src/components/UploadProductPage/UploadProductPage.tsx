@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import useInput from '../../hooks/useInput';
 import { RootState } from '../../modules';
 import { addProduct } from '../../modules/product';
+import { authUser } from '../../modules/user';
 import FileUpload from '../common/utils/FileUpload';
 import { continents } from '../LandingPage/data';
 
@@ -56,6 +57,13 @@ export default function UploadProductPage({
     );
   };
   useEffect(() => {
+    dispatch(authUser());
+  }, []);
+  useEffect(() => {
+    if (!userInfo) {
+      message.error('로그인 필요!!');
+      history.push('/');
+    }
     if (data) {
       message.success('상품등록 성공');
       history.push('/');

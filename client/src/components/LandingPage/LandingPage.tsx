@@ -1,4 +1,4 @@
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Skeleton } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -69,7 +69,12 @@ export default function LandingPage(): JSX.Element {
     dispatch(loadProduct(data));
   }, [skip, filters, searchValue]);
 
-  if (!data) return <div>데이터가 없어요ㅠㅠ</div>;
+  if (!data)
+    return (
+      <LandingPageContaiber>
+        <Skeleton active avatar />
+      </LandingPageContaiber>
+    );
   return (
     <LandingPageContaiber>
       <h1>메인페이지</h1>

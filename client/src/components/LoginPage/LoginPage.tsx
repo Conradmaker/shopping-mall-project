@@ -82,7 +82,7 @@ export default function LoginPage({
           rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
         >
           <Input
-            type="text"
+            type="password"
             name="password"
             value={password}
             onChange={onChange}
