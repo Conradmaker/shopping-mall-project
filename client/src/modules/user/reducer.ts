@@ -1,5 +1,5 @@
 import { createReducer } from 'typesafe-actions';
-import { PAYPAL_SUCCESS_REQUEST, PAYPAL_SUCCESS_SUCCESS } from '../Payment';
+import { PAYPAL_SUCCESS_SUCCESS } from '../Payment';
 import { Product } from '../product';
 import {
   LOGIN_REQUEST,
@@ -41,6 +41,7 @@ const user = createReducer<UserState, UserActions>(initialState, {
   [LOGIN_REQUEST]: state => ({
     ...state,
     userLogin: { loading: true, data: null, error: null },
+    errorMsg: null,
   }),
   [LOGIN_SUCCESS]: (state, action) => ({
     ...state,
@@ -84,7 +85,7 @@ const user = createReducer<UserState, UserActions>(initialState, {
   }),
   [AUTH_REQUEST]: state => ({
     ...state,
-    userAuth: { loading: true, data: null, error: null },
+    userAuth: { loading: true, data: state.userAuth.data, error: null },
     errorMsg: null,
   }),
   [AUTH_SUCCESS]: (state, action) => ({
@@ -114,7 +115,7 @@ const user = createReducer<UserState, UserActions>(initialState, {
   }),
   [LOAD_CART_REQUEST]: state => ({
     ...state,
-    loadCart: { loading: true, data: null, error: null },
+    loadCart: { loading: true, data: state.loadCart.data, error: null },
     errorMsg: null,
   }),
   [LOAD_CART_SUCCESS]: (state, action) => ({

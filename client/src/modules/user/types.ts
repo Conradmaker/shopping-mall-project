@@ -18,6 +18,14 @@ export interface Cart {
   quantity: number;
   date: number;
 }
+export interface History {
+  dataOfPurchase: number;
+  name: string;
+  id: string;
+  price: number;
+  quantity: number;
+  paymentId: string;
+}
 export interface UserData {
   _id?: string;
   isAdmin?: boolean;
@@ -30,14 +38,7 @@ export interface UserData {
   cart?: Cart[];
   history?: History[];
 }
-export interface History {
-  dataOfPurchase: number;
-  name: string;
-  id: string;
-  price: number;
-  quantity: number;
-  paymentId: string;
-}
+
 export type UserActions =
   | ActionType<typeof actions>
   | ReturnType<typeof paypalSuccessAsync.success>;
