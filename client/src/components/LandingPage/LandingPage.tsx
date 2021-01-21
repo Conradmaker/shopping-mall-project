@@ -24,6 +24,13 @@ const LandingPageContaiber = styled.main`
     display: flex;
     justify-content: center;
   }
+  @media screen and (max-width: 1200px) {
+    padding: 20px;
+    .ant-col {
+      width: 100%;
+      max-width: auto;
+    }
+  }
 `;
 export default function LandingPage(): JSX.Element {
   const {

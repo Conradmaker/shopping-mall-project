@@ -16,6 +16,9 @@ const UploadProductContainer = styled.div`
   label {
     width: 100px;
   }
+  @media screen and (max-width: 1200px) {
+    padding: 20px;
+  }
 `;
 
 export default function UploadProductPage({

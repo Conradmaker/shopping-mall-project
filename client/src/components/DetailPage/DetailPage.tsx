@@ -14,6 +14,12 @@ const DetailContainer = styled.div`
   h1 {
     text-align: center;
   }
+  .ant-btn-round.ant-btn-lg {
+    width: 100%;
+  }
+  @media screen and (max-width: 1200px) {
+    padding: 20px;
+  }
 `;
 
 export default function DetailPage({

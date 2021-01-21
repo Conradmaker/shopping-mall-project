@@ -22,6 +22,9 @@ const CartPageContainer = styled.div`
     margin-top: 30px;
     margin-bottom: 10px;
   }
+  @media screen and (max-width: 1200px) {
+    padding: 20px;
+  }
 `;
 export default function CartPage({
   history,

@@ -12,6 +12,9 @@ dayjs.locale('ko');
 const HistoryContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
+  @media screen and (max-width: 1200px) {
+    padding: 20px;
+  }
 `;
 const columns = [
   {

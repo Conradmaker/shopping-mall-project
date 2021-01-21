@@ -1,5 +1,5 @@
-import React from 'react';
-import { Badge, Button, Menu } from 'antd';
+import React, { useCallback, useMemo } from 'react';
+import { Badge, Button, Menu, Switch } from 'antd';
 import {
   HomeOutlined,
   LoginOutlined,
@@ -10,15 +10,28 @@ import {
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../modules';
-import { logoutUser } from '../../../modules/user';
+import { Cart, logoutUser } from '../../../modules/user';
+import { toggleTheme } from '../../../modules/ui';
 
-export default function NavBar(): JSX.Element {
+function countCart(cart: Cart[]): number | null {
+  if (!cart) return null;
+  return cart.reduce((i, v) => i + v.quantity, 0);
+}
+type NavBarProps = {
+  darkMode: boolean;
+};
+function NavBar({ darkMode }: NavBarProps): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const cartLength = userInfo?.cart?.reduce((i, v) => i + v.quantity, 0);
+  const cartLength = useMemo(() => countCart(userInfo?.history as []), [
+    userInfo,
+  ]);
+  const toggleDark = useCallback(() => {
+    dispatch(toggleTheme());
+  }, [darkMode]);
 
   return (
-    <Menu mode="horizontal">
+    <Menu mode="horizontal" theme={darkMode ? 'dark' : 'light'}>
       <Menu.Item key="home" icon={<HomeOutlined />}>
         <Link to="/">HOME</Link>
       </Menu.Item>
@@ -62,6 +75,14 @@ export default function NavBar(): JSX.Element {
           </Menu.Item>
         </>
       )}
+      <Switch
+        checkedChildren="LIGHT"
+        unCheckedChildren="DARK"
+        defaultChecked
+        onChange={toggleDark}
+      />
     </Menu>
   );
 }
+
+export default NavBar;

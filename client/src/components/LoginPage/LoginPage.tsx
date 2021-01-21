@@ -24,6 +24,12 @@ export const LoginContainer = styled.div`
       margin-left: 20px;
     }
   }
+  @media screen and (max-width: 1200px) {
+    padding: 20px;
+    .ant-form-item-label {
+      justify-content: flex-start;
+    }
+  }
 `;
 
 export default function LoginPage({
