@@ -36,7 +36,6 @@ describe("POST /api/user/login", () => {
       .post("/api/user/login")
       .send({email: "yhg03", password: "2"});
 
-    console.log(res);
     expect(res.statusCode).toBe(400);
     expect(res.text).toBe("이메일이 틀렸습니다.");
   });

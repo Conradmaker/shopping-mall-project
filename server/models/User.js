@@ -31,7 +31,6 @@ userSchema.pre("save", async function (next) {
 });
 userSchema.methods.comparePassword = async function (plainPassword) {
   const isMatch = await bcrypt.compare(plainPassword, this.password);
-  console.log(isMatch);
   if (!isMatch) throw new Error("");
   return isMatch;
 };
@@ -47,7 +46,6 @@ userSchema.methods.generateToken = async function () {
 
 userSchema.statics.findByToken = async function (token) {
   const user = this;
-  console.log(token);
   const decoded = await jwt.verify(token, "secretToken");
   const resultUser = await user.findOne({_id: decoded, token: token});
   if (!resultUser) throw new Error("");
