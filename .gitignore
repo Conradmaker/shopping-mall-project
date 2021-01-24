@@ -1,3 +1,4 @@
 node_modules/*
 .eslintcache
 server/uploads/*
+server/coverage/*

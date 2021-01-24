@@ -8,8 +8,8 @@ const userSchema = mongoose.Schema({
   password: {type: String, minLength: 5},
   lastname: {type: String, maxLength: 50},
   role: {type: Number, default: 0},
-  cart:{type:Array, default:[]},
-  history:{type:Array,default:[]},
+  cart: {type: Array, default: []},
+  history: {type: Array, default: []},
   image: String,
   token: {type: String},
   tokenExp: {type: Number},
@@ -29,30 +29,30 @@ userSchema.pre("save", async function (next) {
     next();
   }
 });
-userSchema.methods.comparePassword = function (plainPassword, cb) {
-  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
+userSchema.methods.comparePassword = async function (plainPassword) {
+  const isMatch = await bcrypt.compare(plainPassword, this.password);
+  console.log(isMatch);
+  if (!isMatch) throw new Error("");
+  return isMatch;
 };
-userSchema.methods.generateToken = function (cb) {
+
+userSchema.methods.generateToken = async function () {
   let user = this;
   const token = jwt.sign(user._id.toHexString(), "secretToken");
   user.token = token;
-  user.save(function (err, user) {
-    if (err) return cb(err);
-    cb(null, user);
-  });
+  const result = await user.save();
+  if (!result) throw new Error("");
+  return result;
 };
-userSchema.statics.findByToken = function (token, cb) {
-  const user = this;
 
-  jwt.verify(token, "secretToken", function (err, decoded) {
-    user.findOne({_id: decoded, token: token}, function (err, user) {
-      if (err) return cb(err);
-      cb(null, user);
-    });
-  });
+userSchema.statics.findByToken = async function (token) {
+  const user = this;
+  console.log(token);
+  const decoded = await jwt.verify(token, "secretToken");
+  const resultUser = await user.findOne({_id: decoded, token: token});
+  if (!resultUser) throw new Error("");
+  return resultUser;
 };
+
 const User = mongoose.model("User", userSchema);
 module.exports = {User};

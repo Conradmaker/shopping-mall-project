@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const path = require('path')
+const path = require("path");
 
 const config = require("./config/key");
 
@@ -27,3 +27,4 @@ app.use("/api", require("./router"));
 app.listen(port, () => {
   console.log(`${port}포트에서 서버가 실행되었습니다.`);
 });
+module.exports = app;
