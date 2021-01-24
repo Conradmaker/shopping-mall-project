@@ -11,11 +11,9 @@ mongoose
   .connect(config.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: true,
   })
-  .then(() => console.log("mongodb 연결"))
-  .catch(() => console.error("몽고디비 연결 실패"));
+  .then(() => console.log("MONGO_DB_CONNECTED"))
+  .catch(() => console.error("MONGO_DB_ERROR"));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cookieParser());
@@ -24,6 +22,9 @@ app.use(express.urlencoded({extended: true}));
 
 app.get("/", (req, res) => res.send("hello  world111!"));
 app.use("/api", require("./router"));
+app.use((err, req, res, next) => {
+  res.status(500).json({message: err.message});
+});
 app.listen(port, () => {
   console.log(`${port}포트에서 서버가 실행되었습니다.`);
 });
