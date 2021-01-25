@@ -135,6 +135,10 @@ const user = createReducer<UserState, UserActions>(initialState, {
   [REMOVE_CART_SUCCESS]: (state, action) => ({
     ...state,
     removeCart: { loading: false, data: true, error: null },
+    userInfo: {
+      ...state.userInfo,
+      cart: state.userInfo?.cart?.filter(v => v.id !== action.payload.id),
+    },
     loadCart: {
       ...state.loadCart,
       data: (state.loadCart.data as Product[]).filter(

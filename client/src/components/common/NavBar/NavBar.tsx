@@ -23,9 +23,7 @@ type NavBarProps = {
 function NavBar({ darkMode }: NavBarProps): JSX.Element {
   const { userInfo } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const cartLength = useMemo(() => countCart(userInfo?.history as []), [
-    userInfo,
-  ]);
+  const cartLength = useMemo(() => countCart(userInfo?.cart as []), [userInfo]);
   const toggleDark = useCallback(() => {
     dispatch(toggleTheme());
   }, [darkMode]);
