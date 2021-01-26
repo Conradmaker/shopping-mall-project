@@ -5,8 +5,7 @@ const saveImage = (req, res) => {
 };
 const addProduct = async (req, res, next) => {
   try {
-    const product = new Product(req.body);
-    await product.save();
+    const product = await Product.create(req.body);
     res.status(201).json(product);
   } catch (e) {
     res.status(400).send("상품등록 실패");
@@ -17,9 +16,10 @@ const addProduct = async (req, res, next) => {
 const loadProducts = async (req, res, next) => {
   const limit = req.body.limit ? parseInt(req.body.limit) : 8;
   const skip = req.body.skip ? parseInt(req.body.skip) : 0;
+
   const {
-    filters: {continents, price},
-    searchValue,
+    filters: {continents = [], price = []},
+    searchValue = "",
   } = req.body;
   const findArgs = {};
   if (continents.length > 0) {
@@ -40,6 +40,7 @@ const loadProducts = async (req, res, next) => {
         .limit(limit);
       res.status(200).json({product: productInfo, loadMore: req.body.loadMore});
     } else {
+      console.log(12324974927947297429749279479279);
       const productInfo = await Product.find(findArgs)
         .populate("writer")
         .skip(skip)
@@ -52,7 +53,6 @@ const loadProducts = async (req, res, next) => {
   }
 };
 const loadProduct = async (req, res, next) => {
-  const type = req.query.type;
   const id = req.params.id;
 
   try {
