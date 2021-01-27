@@ -57,7 +57,7 @@ describe("LOAD ALL PRODUCTS", () => {
   let skip;
   let populate;
   let find;
-  beforeEach(() => {
+  beforeAll(() => {
     find = jest.fn();
     limit = jest.fn();
     populate = jest.fn();
@@ -67,10 +67,12 @@ describe("LOAD ALL PRODUCTS", () => {
     populate.mockReturnValue({skip});
     skip.mockReturnValue({limit});
     limit.mockReturnValue({});
+    req = httpMocks.createRequest();
   });
   it("should be function", () => {
     expect(typeof productController.loadProducts).toBe("function");
   });
+
   it("limit&skip is empty limit should called with 8,0", async () => {
     req.body = {filters: {}, loadMore: false};
     await productController.loadProducts(req, res, next);
@@ -82,9 +84,39 @@ describe("LOAD ALL PRODUCTS", () => {
     expect(res._getJSONData()).toEqual({product: {}, loadMore: false});
   });
 
-  /**
-   * 리밋 스킵 있을경우 , 에러처리, 서치 있을경우 , 필터 있을경우
-   */
+  it("limit&skip is exist should called with ", async () => {
+    req.body = {filters: {}, skip: 5, limit: 5, loadMore: false};
+    await productController.loadProducts(req, res, next);
+    expect(productModel.find).toBeCalledWith({});
+    expect(populate).toBeCalledWith("writer");
+    expect(skip).toBeCalledWith(5);
+    expect(limit).toBeCalledWith(5);
+    expect(res.statusCode).toBe(200);
+    expect(res._getJSONData()).toEqual({product: {}, loadMore: false});
+  });
+  it("should find search when searchValue is defined", async () => {
+    req.body = {filters: {}, searchValue: "test", loadMore: false};
+    await productController.loadProducts(req, res, next);
+    expect(productModel.find).toBeCalledWith({});
+    expect(find).toBeCalledWith({$text: {$search: "test"}});
+  });
+  it("should filter when price , continents are defined", async () => {
+    req.body = {filters: {continents: ["a"], price: [1, 2]}, loadMore: false};
+    await productController.loadProducts(req, res, next);
+    expect(productModel.find).toBeCalledWith({
+      continents: ["a"],
+      price: {$gte: 1, $lte: 2},
+    });
+  });
+  it("should handle Error", async () => {
+    req.body = {filters: {}, loadMore: false};
+    const errorMsg = {message: ""};
+    const rejectedPromise = Promise.reject(errorMsg);
+    productModel.find.mockReturnValue(rejectedPromise);
+    await productController.loadProducts(req, res, next);
+    expect(res.statusCode).toBe(400);
+    expect(res._getData()).toBe("상품조회 실패");
+  });
 });
 
 describe("LOAD PRODUCT DETAIL", () => {

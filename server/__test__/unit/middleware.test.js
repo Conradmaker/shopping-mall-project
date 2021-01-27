@@ -1,6 +1,7 @@
 const {auth} = require("../../middleware/auth");
 const httpMocks = require("node-mocks-http");
 const {User: userModel} = require("../../models/User");
+const {uploadImg} = require("../../middleware/uploads");
 
 userModel.findByToken = jest.fn();
 let req;
@@ -39,5 +40,11 @@ describe("AUTH MIDDLEWARE", () => {
     await auth(req, res, next);
     expect(res.statusCode).toBe(400);
     expect(res._getJSONData()).toEqual({isAuth: false, error: true});
+  });
+});
+
+describe("UPLOAD MIDDLEWARE", () => {
+  it("should be multer", () => {
+    expect(typeof uploadImg).toBe("object");
   });
 });

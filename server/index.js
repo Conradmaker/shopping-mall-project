@@ -25,6 +25,7 @@ app.use("/api", require("./router"));
 app.use((err, req, res, next) => {
   res.status(500).json({message: err.message});
 });
+
 app.listen(port, () => {
   console.log(`${port}포트에서 서버가 실행되었습니다.`);
 });

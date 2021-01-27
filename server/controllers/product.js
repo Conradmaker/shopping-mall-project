@@ -16,7 +16,6 @@ const addProduct = async (req, res, next) => {
 const loadProducts = async (req, res, next) => {
   const limit = req.body.limit ? parseInt(req.body.limit) : 8;
   const skip = req.body.skip ? parseInt(req.body.skip) : 0;
-
   const {
     filters: {continents = [], price = []},
     searchValue = "",
@@ -40,7 +39,6 @@ const loadProducts = async (req, res, next) => {
         .limit(limit);
       res.status(200).json({product: productInfo, loadMore: req.body.loadMore});
     } else {
-      console.log(12324974927947297429749279479279);
       const productInfo = await Product.find(findArgs)
         .populate("writer")
         .skip(skip)
