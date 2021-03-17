@@ -3,6 +3,7 @@ import { AxiosError } from 'axios';
 import { UserData, loginData, LogoutData, RegisterData, Cart } from './types';
 import { createAsyncAction } from 'typesafe-actions';
 import { Product } from '../product';
+import { createAction } from '@reduxjs/toolkit';
 
 export const LOGIN_REQUEST = 'user/LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'user/LOGIN_SUCCESS';
